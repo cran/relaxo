@@ -1,5 +1,5 @@
 `plot.relaxo` <-
-function(x, type= "b", lty = 1,
+function(x, type= "l", lty = 1,
                         main = NULL,
                         xlab = "|beta|/max|beta| (phi=1)",
                         ylab = expression("coefficients  " * beta[j]),
@@ -17,7 +17,7 @@ function(x, type= "b", lty = 1,
   
   fracbeta <- apply( abs(x$beta[ x$phi==1, ]),1,sum)
   for (phi in sort(plotphi)) {
-      matplot(fracbeta,
+      matplot(fracbeta/max(fracbeta),
               x$beta  [x$phi == phi, ],
               type = type, lty = lty,
               main = if(is.null(main)) substitute(phi == P, list(P = format(phi))),

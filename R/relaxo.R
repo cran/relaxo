@@ -1,7 +1,12 @@
 `relaxo` <-
-function(X, Y, phi= seq(0,1, length=4), fraclambda=NULL, max.steps= min(length(Y),2*ncol(X)),
-                   fast = TRUE, scale= TRUE, keep.data = TRUE)
+function(X, Y, phi= seq(0,1, length=4), max.steps= min(2*length(Y),2*ncol(X)),
+                   fast = TRUE,  keep.data = TRUE, warn=TRUE )
 {
+  if(warn){
+    if( abs(mean(Y))> 0.01*sd(Y)) warning("response variable not centered")
+    if( any( abs(apply(X,2,mean)) > 0.01* apply(X,2,sd) )) warning("predictor variables not centered")
+    if( sd(apply(X,2,sd))>0.001) warning("predictor variables not scaled")
+  }
   
   stopifnot(require("lars")) # bail out if package "lars" cannot be loaded
 
@@ -14,30 +19,12 @@ function(X, Y, phi= seq(0,1, length=4), fraclambda=NULL, max.steps= min(length(Y
 
   stopifnot((n.phi <- length(phi)) >= 2) 
 
-  if(keep.data){
-    origX <- X
-    origY <- Y
-  }
-  
-  ## scaling and centering
-  shiftX <- apply(X,2, mean)
-  shiftY <- mean(Y)
-  X <- sweep(X,2, shiftX)
-  Y <- Y - shiftY
 
-  if(scale) {
-      scaleX <- sqrt(apply(X^2,2, mean))
-      X <- sweep(X,2, scaleX, FUN="/")
-  } else {
-      scaleX <- rep(1, ncol(X))
-  }
 
   larsfit <- lars(X, Y, use.Gram=FALSE, max.steps=max.steps)
-  if(is.null(fraclambda)){
-    beta <- coef(larsfit)
-  }else{
-    beta <- coef(larsfit,s=fraclambda,mode="fraction")
-  }
+  
+  beta <- coef(larsfit)
+  
   nSteps <- nrow(beta)
   if(nSteps < 3)
       stop("'Need at least 3 lars() steps; maybe increase 'max.steps'?")
@@ -48,13 +35,8 @@ function(X, Y, phi= seq(0,1, length=4), fraclambda=NULL, max.steps= min(length(Y
     lambda[s] <- abs(crossprod(Y - X %*% beta[s,], X[, which(beta[s,] != 0)[1]]))
   lambda[1] <- max(abs( crossprod(Y, X )))
 
-  fraclambda <- numeric(nSteps)
-  for(s in 1:nSteps)
-    fraclambda[s] <- sum(abs(beta[s, ]))/sum(abs(beta[nSteps,]))
-  
 
   lambdaall <- rep(lambda[1:(length(lambda)-1)], each=n.phi)
-  fraclambdaall <- rep(fraclambda[1:(length(fraclambda)-1)], each=n.phi)
   phiall <- rep(phi, nSteps-1)
 
   betarelaxo[1:n.phi, ] <- rep(0, ncol(beta))
@@ -104,15 +86,10 @@ function(X, Y, phi= seq(0,1, length=4), fraclambda=NULL, max.steps= min(length(Y
 
   }
 
-  relaxo <- c(if(keep.data) list(X = origX, Y = origY), 
+  relaxo <- c(if(keep.data) list(X = X, Y = Y), 
               list(beta = betarelaxo,
                    lambda = lambdaall,
-                   fraclambda = fraclambdaall,
-                   phi = phiall,
-                   scaleX = scaleX,
-                   shiftX = shiftX,
-                   shiftY = shiftY,
-                   scale = scale))
+                   phi = phiall))
   class(relaxo) <- "relaxo"
 
   return(relaxo)

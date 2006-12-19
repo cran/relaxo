@@ -6,7 +6,7 @@
 	Compute the "Relaxed Lasso" solution with minimal cross-validated L2-loss.
 }
 \usage{
-cvrelaxo(X, Y, K = 5, phi = seq(0, 1, length = 10), fraclambda = seq(0, 1, length = 50), max.steps = min(length(Y), 2 * ncol(X)), fast = TRUE, keep.data = TRUE)
+cvrelaxo(X, Y, K = 5, phi = seq(0, 1, length = 10), max.steps = min( 2* length(Y), 2 * ncol(X)), fast = TRUE, keep.data = TRUE, warn=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -14,10 +14,10 @@ cvrelaxo(X, Y, K = 5, phi = seq(0, 1, length = 10), fraclambda = seq(0, 1, lengt
   \item{Y}{ as in function \code{relaxo} }
   \item{K}{ Number of folds. Defaults to 5. }
   \item{phi}{  as in function \code{relaxo} } 
-  \item{fraclambda}{ as in function \code{relaxo} }
   \item{max.steps}{ as in function \code{relaxo} }
   \item{fast}{ as in function \code{relaxo} }
   \item{keep.data}{ as in function \code{relaxo} }
+  \item{warn}{ as in function \code{relaxo} }
 }
 \value{
 	An object of class \code{relaxo}, for which print and predict methods exist
@@ -35,7 +35,10 @@ cvrelaxo(X, Y, K = 5, phi = seq(0, 1, length = 10), fraclambda = seq(0, 1, lengt
 
 \examples{
 	data(diabetes)
-	attach(diabetes)
+
+## Center and scale variables
+   	x <- scale(diabetes$x)
+	y <- scale(diabetes$y)
 	
 ## Compute "Relaxed Lasso" solution and plot results
  	object <- relaxo(x,y)
@@ -47,18 +50,12 @@ cvrelaxo(X, Y, K = 5, phi = seq(0, 1, length = 10), fraclambda = seq(0, 1, lengt
 	cvobject <- cvrelaxo(x,y)
 	print(cvobject$phi)
 	print(cvobject$lambda)
-
-## The found penalty lambda re-expressed as fraclambda: 
-## the l1-norm of the found solution divided by
-## the maximal l1-norm of all solutions
-        print(cvobject$fraclambda)
 	
 ## Compute fitted values and plot them versus actual values     
 	fitted.values <- predict(cvobject)
 	plot(fitted.values,y)
 	abline(c(0,1))
 
-	detach(diabetes)       
 }
 \keyword{ models }
 

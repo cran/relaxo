@@ -6,12 +6,12 @@
 	Prediction with Relaxed Lasso
 }
 \usage{
-\method{predict}{relaxo}(object, newX = NULL, fraclambda = NULL, phi = NULL,...)
+\method{predict}{relaxo}(object, newX = NULL, lambda = NULL, phi = NULL,...)
 }
 \arguments{
   \item{object}{ An object of class \code{relaxo} }
   \item{newX}{ A data frame or matrix containing new data. If not given, the prediction for the original training data is returned. }
-  \item{fraclambda}{ The penalty parameter for variable selection, scaled to be in the interval [0,1], so that fraclambda=0 corresponds to no penalty and fraclambda=1 corresponds to maximal penalty (all coefficients equal to zero). }
+  \item{lambda}{ The penalty parameter for variable selection. }
   \item{phi}{ The relaxation parameter in the interval [0,1].  }
   \item{...}{ other arguments (currently ignored). }
 }
