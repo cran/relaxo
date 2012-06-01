@@ -20,8 +20,6 @@ Plot of Relaxed Lasso solutions for various relaxation parameters
   \item{plotphi}{ Which values of the relaxation parameter phi should be plotted? }
   \item{\dots}{ Arguments passed on to the plot function }
 }
-\details{
-}
 \value{
 No return value
 }

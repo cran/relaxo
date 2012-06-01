@@ -33,7 +33,7 @@ relaxo(X, Y, phi = seq(0, 1, length = 4), max.steps = min(2*length(Y), 2 * ncol(
 
 ## Center and scale variables
    	x <- scale(diabetes$x)
-	y <- scale(diabetes$y)
+	y <- as.numeric(scale(diabetes$y))
 	
 ## Compute "Relaxed Lasso" solution and plot results
  	object <- relaxo(x,y)

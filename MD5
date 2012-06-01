@@ -1,0 +1,11 @@
+69bc21b72975c6c6eaba0bec8c647650 *DESCRIPTION
+717349cc7b049be918ac8653a96637de *NAMESPACE
+4ba83f2008b490b86577f6da6852d575 *R/cvrelaxo.R
+b52b3182206c576975da8dc281b6bdd3 *R/plot.relaxo.R
+ff2a141b73c3fc97a3d17009e458abc6 *R/predict.relaxo.R
+c37c093361241f6069f0020f4182cd0a *R/print.relaxo.R
+49eaa3c519921e11d874d03052bee9c2 *R/relaxo.R
+5ebdde2e2290ad2d12aab1cae6fa5e6a *man/cvrelaxo.Rd
+ae0f498e2d006fc9c9c0f43344a06ccd *man/plot.relaxo.Rd
+f8b579423d35c36fa19d7adff4682e04 *man/predict.relaxo.Rd
+47f149344331b54185504a60efc79591 *man/relaxo.Rd

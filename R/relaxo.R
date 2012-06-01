@@ -2,10 +2,11 @@
 function(X, Y, phi= seq(0,1, length=4), max.steps= min(2*length(Y),2*ncol(X)),
                    fast = TRUE,  keep.data = TRUE, warn=TRUE )
 {
+  Y <- as.numeric(Y)
   if(warn){
     if( abs(mean(Y))> 0.01*sd(Y)) warning("response variable not centered")
     if( any( abs(apply(X,2,mean)) > 0.01* apply(X,2,sd) )) warning("predictor variables not centered")
-    if( sd(apply(X,2,sd))>0.001) warning("predictor variables not scaled")
+    if( sd(as.numeric(apply(X,2,sd)))>0.001) warning("predictor variables not scaled")
   }
   
   stopifnot(require("lars")) # bail out if package "lars" cannot be loaded
